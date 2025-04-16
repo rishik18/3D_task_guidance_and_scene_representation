@@ -1,7 +1,9 @@
 # CLIFF+azure
 This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data. 
+The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
 
-# CLIFF [ECCV 2022 Oral]
+
+## CLIFF [ECCV 2022 Oral]
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/cliff-carrying-location-information-in-full/3d-human-pose-estimation-on-3dpw)](https://paperswithcode.com/sota/3d-human-pose-estimation-on-3dpw?p=cliff-carrying-location-information-in-full)
 
