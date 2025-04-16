@@ -1,3 +1,6 @@
+# CLIFF+azure
+This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data. 
+
 # CLIFF [ECCV 2022 Oral]
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/cliff-carrying-location-information-in-full/3d-human-pose-estimation-on-3dpw)](https://paperswithcode.com/sota/3d-human-pose-estimation-on-3dpw?p=cliff-carrying-location-information-in-full)
@@ -94,7 +97,7 @@ python3 demo_fit.py --img=examples/im1010.jpg \
                     --openpose=examples/im1010_openpose.json
 ```
 
-## Citing
+## Citing the original CLIFF paper
 ```
 @Inproceedings{li2022cliff,
   Title     = {CLIFF: Carrying Location Information in Full Frames into Human Pose and Shape Estimation},
@@ -104,5 +107,5 @@ python3 demo_fit.py --img=examples/im1010.jpg \
 }
 ```
 
-## Contact
-If you have problems about usage, feel free to open an issue or directly contact me via: haofanwang.ai@gmail.com. But please note that I'm NOT the author of CLIFF, so for any question about the paper, contact the author.
+## Author for the CLIFF repo
+haofanwang.ai@gmail.com.
