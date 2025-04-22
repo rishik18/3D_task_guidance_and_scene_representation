@@ -5,9 +5,15 @@ The contents of the README below this section have been borrowed from the CLIFF 
 ## For single frame fitting
 1) Update the "frame" file name and change the "azure_keypoints_sample" keypoints in azure_CLIFF_single_frame.py
 2) Run azure_CLIFF_single_frame.py
+The input image should be 1920x1080 as the keypoints are for that image size.
 
+## Resizing
+You can resize the RGB frames to 1920x1080 by using the resize.py file.
 
-## CLIFF [ECCV 2022 Oral]
+## Note for using CLIFF demo_fit
+You will need to modify the smplify.py file to use the original ignore list instead of the updated one.
+***
+# CLIFF [ECCV 2022 Oral]
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/cliff-carrying-location-information-in-full/3d-human-pose-estimation-on-3dpw)](https://paperswithcode.com/sota/3d-human-pose-estimation-on-3dpw?p=cliff-carrying-location-information-in-full)
 
