@@ -4,7 +4,8 @@ The contents of the README below this section have been borrowed from the CLIFF 
 
 ## For single frame fitting
 1) Update the "frame" file name and change the "azure_keypoints_sample" keypoints in azure_CLIFF_single_frame.py
-2) Run azure_CLIFF_single_frame.py
+2) Run azure_CLIFF_single_frame.py.
+
 The input image should be 1920x1080 as the keypoints are for that image size.
 
 ## Resizing
