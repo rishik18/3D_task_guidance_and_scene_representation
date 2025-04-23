@@ -11,6 +11,10 @@ The input image should be 1920x1080 as the keypoints are for that image size.
 ## Resizing
 You can resize the RGB frames to 1920x1080 by using the resize.py file.
 
+## State change
+1) Run state_change_single_frame.py
+2)  Press numbers 1 – 4 to cycle through the four sample states.
+
 ## Note for using CLIFF demo_fit
 You will need to modify the smplify.py file to use the original ignore list instead of the updated one.
 ***
