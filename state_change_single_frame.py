@@ -259,7 +259,7 @@ def main():
     # ------------------------------------------------------------------
     # 1  Load colour frame & Azure‑Kinect 2‑D joints (example numbers) --
     # ------------------------------------------------------------------
-    frame = cv2.imread(r"D:/CSU_data/mockup_video_data_v2/tmp_color_199735_resize/frame00000042.png")
+    frame = cv2.imread(r"D:/CSU_data/mockup_video_data_v2/tmp_color_199735_resize/frame00000045.png")
     azure_2d = np.array([
         (1152, 612),(1178, 542),(1197, 479),(1205, 373),(1221, 390),
         (1287, 413),(1339, 545),(1268, 592),(1248, 597),(1234, 608),

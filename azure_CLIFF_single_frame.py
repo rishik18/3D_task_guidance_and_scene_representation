@@ -207,7 +207,7 @@ def main():
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     print(f"Using {device}")
     
-    frame = cv2.imread(r"D:\CSU_data\mockup_video_data_v2\tmp_color_199735_resize\frame00000042.png")
+    frame = cv2.imread(r"D:\CSU_data\mockup_video_data_v2\tmp_color_199735_resize\frame00000045.png")
     azure_keypoints_sample = np.array([(1152, 612), (1178, 542), (1197, 479), (1205, 373), (1221, 390), (1287, 413), (1339, 545), (1268, 592), (1248, 597), (1234, 608), (1209, 590), (1188, 391), (1126, 412), (1064, 525), (1046, 510), (1023, 463), (1035, 462), (1039, 451), (1199, 624), (1138, 733), (1131, 947), (1109, 1067), (1112, 602), (982, 616), (855, 796), (771, 783), (1207, 332), (1158, 312), (1182, 292), (1243, 298), (1159, 295), (1174, 300)])
     
     # Camera calibration
