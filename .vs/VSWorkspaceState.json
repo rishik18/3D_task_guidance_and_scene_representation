@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\common"
   ],
-  "SelectedNode": "\\azure_test.py",
+  "SelectedNode": "\\azure_CLIFF_single_frame.py",
   "PreviewInSolutionExplorer": false
 }
