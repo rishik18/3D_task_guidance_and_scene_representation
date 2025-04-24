@@ -207,7 +207,7 @@ def main():
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     print(f"Using {device}")
     
-    frame = cv2.imread(r"D:\CSU_data\mockup_video_data_v2\tmp_color_199735_resize\frame00000045.png")
+    frame = cv2.imread(r"D:\CSU_data\mockup_video_data_v2\tmp_color_199735_resize\frame00000042.png")
     azure_keypoints_sample = np.array([(1152, 612), (1178, 542), (1197, 479), (1205, 373), (1221, 390), (1287, 413), (1339, 545), (1268, 592), (1248, 597), (1234, 608), (1209, 590), (1188, 391), (1126, 412), (1064, 525), (1046, 510), (1023, 463), (1035, 462), (1039, 451), (1199, 624), (1138, 733), (1131, 947), (1109, 1067), (1112, 602), (982, 616), (855, 796), (771, 783), (1207, 332), (1158, 312), (1182, 292), (1243, 298), (1159, 295), (1174, 300)])
     
     # Camera calibration
@@ -215,7 +215,7 @@ def main():
                   [   0.        , 917.26507568, 554.48309326],
                   [   0.        ,   0.        ,   1.        ]])
     focal_length_value = (K[0,0] + K[1,1]) / 2.0
-    camera_center = np.array([960, 540])
+    camera_center = [960, 540]
     
     print(azure_keypoints_sample.shape)
 
@@ -313,23 +313,15 @@ def main():
     init_pose = transforms.matrix_to_axis_angle(pred_rotmat).contiguous().view(-1, 72)        
     
     # Run SMPLify optimization
-    smplify = SMPLify(step_size=1e-2, batch_size=1, num_iters=100, focal_length=focal_length)
+    smplify = SMPLify(step_size=1e-2, batch_size=1, num_iters=100, focal_length=focal_length, device= device)
     results = smplify(init_pose.detach(), pred_betas.detach(), pred_cam_full.detach(), camera_center_tensor, keypoints)
     
-    new_opt_vertices, new_opt_joints, new_opt_pose, new_opt_betas, new_opt_cam_t, new_opt_joint_loss = results
+    new_opt_vertices, new_opt_joints, new_opt_pose, new_opt_betas, new_opt_cam_t, new_opt_joint_loss, faces = results
     
-    # Get SMPL faces and vertices
-    with torch.no_grad():
-        pred_output = smpl(betas=new_opt_betas,
-                           body_pose=new_opt_pose[:, 3:],global_orient=new_opt_pose[:, :3],
-                           pose2rot=True,
-                           transl=new_opt_cam_t)
 
-    #vertices = pred_output.vertices.cpu().detach().numpy()
-    vertices = pred_output.vertices.cpu().detach().numpy()
+    vertices = new_opt_vertices.cpu().detach().numpy()
     if vertices.ndim == 3:
         vertices = vertices[0]
-    faces = smpl.faces
     if not isinstance(faces, np.ndarray):
         faces = faces.cpu().numpy() if torch.is_tensor(faces) else faces
 

@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\models",
+    "\\models\\cliff_hr48",
+    "\\reference_code"
   ],
-  "SelectedNode": "\\azure_CLIFF_single_frame.py",
+  "SelectedNode": "\\examples",
   "PreviewInSolutionExplorer": false
 }

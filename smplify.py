@@ -155,5 +155,5 @@ class SMPLify():
         joints = smpl_output.joints.detach()
         pose = torch.cat([global_orient, body_pose], dim=-1).detach()
         betas = betas.detach()
-
-        return vertices, joints, pose, betas, camera_translation, reprojection_loss
+        faces = self.smpl.faces
+        return vertices, joints, pose, betas, camera_translation, reprojection_loss, faces
