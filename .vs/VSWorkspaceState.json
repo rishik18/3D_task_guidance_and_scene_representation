@@ -1,10 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\models",
     "\\models\\cliff_hr48",
     "\\reference_code"
   ],
-  "SelectedNode": "\\examples",
+  "SelectedNode": "\\smplify.py",
   "PreviewInSolutionExplorer": false
 }
