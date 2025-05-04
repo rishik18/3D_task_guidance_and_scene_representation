@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\models\\cliff_hr48",
     "\\reference_code"
   ],
-  "SelectedNode": "\\smplify.py",
+  "SelectedNode": "\\realtime_state_change_demo.py",
   "PreviewInSolutionExplorer": false
 }

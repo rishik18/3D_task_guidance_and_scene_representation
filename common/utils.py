@@ -47,6 +47,42 @@ def cam_crop2full(crop_cam, center, scale, full_img_shape, focal_length):
     return full_cam
 
 
+def full2crop_cam(full_cam, center, b, camera_center_tensor, focal_length):
+    """
+    Invert cam_crop2full:
+      full_cam:    (N,3) tensor [tx_full, ty_full, tz]
+      center:      (N,2) tensor [c_x, c_y]
+      scale:       (N,1) tensor b/200
+      full_img_shape: (N,2) tensor [img_h, img_w]
+      focal_length:  (N,) tensor
+    Returns:
+      crop_cam:    (N,3) tensor [s, tx_crop, ty_crop]
+    """
+    cx, cy       = center[:, 0], center[:, 1]
+
+    #b            = scale * 200.0             # b = scale * 200
+    w2, h2       = camera_center_tensor[:,0],camera_center_tensor[:,1]
+    #w2,h2= 960,540
+    tx_full, ty_full, tz = full_cam.unbind(dim=-1)
+
+    # recover bs = b * s
+    # from tz = 2*f / bs  ==>  bs = 2*f / tz
+    eps = 1e-9
+    bs = 2.0 * focal_length / (tz + eps)
+
+    # then s = bs / b
+    s = bs / b
+
+    # and
+    # tx_full = 2*(cx - w2)/bs + tx_crop
+    # ty_full = 2*(cy - h2)/bs + ty_crop
+    tx_crop = tx_full - 2.0 * (cx - w2) / bs
+    ty_crop = ty_full - 2.0 * (cy - h2) / bs
+
+    crop_cam = torch.stack([s, tx_crop, ty_crop], dim=-1)
+    return crop_cam
+
+
 def video_to_images(vid_file, img_folder=None):
     command = ['ffmpeg',
                '-i', vid_file,

@@ -1,4 +1,4 @@
-# Copyright (c) 2019, University of Pennsylvania, Max Planck Institute for Intelligent Systems
+﻿# Copyright (c) 2019, University of Pennsylvania, Max Planck Institute for Intelligent Systems
 # This script is borrowed and extended from SPIN
 
 import cv2
@@ -48,6 +48,53 @@ def transform(pt, center, scale, res, invert=0, rot=0):
     new_pt = np.dot(t, new_pt)
     return np.array([round(new_pt[0]), round(new_pt[1])], dtype=int) + 1
 
+'''
+def crop(img, center, scale, res):
+    # ul / br from the original SPIN code -------------------------------
+    ul = np.array(transform([1, 1], center, scale, res, invert=1)) - 1
+    br = np.array(transform([res[1] + 1, res[0] + 1], center, scale, res, invert=1)) - 1
+
+    dx   = br[0] - ul[0]
+    dy   = br[1] - ul[1]
+    side = int(max(dx, dy)) 
+
+    #side  = int(br[0] - ul[0])          # we assume square crop in CLIFF/HMR
+    if side <= 0:                       # bad bbox → fall back to whole frame
+        return cv2.resize(img, (res[1], res[0])), ul, br
+
+    new_img = np.zeros((side, side, img.shape[2]), dtype=np.float32)
+
+    # ranges in destination and source ----------------------------------
+    dst_x0 = max(0, -ul[0]);  src_x0 = max(0,  ul[0])
+    dst_y0 = max(0, -ul[1]);  src_y0 = max(0,  ul[1])
+    width  = min(br[0], img.shape[1]) - src_x0
+    height = min(br[1], img.shape[0]) - src_y0
+
+    # Check if there's any valid overlap based on source calculations
+    if width > 0 and height > 0:
+        # Now, determine the actual dimensions we can copy, considering the destination buffer size
+        # Available height in new_img starting from dst_y0
+        available_dst_height = side - dst_y0
+        # Available width in new_img starting from dst_x0
+        available_dst_width = side - dst_x0
+    
+        # The actual height/width to copy is limited by both source overlap and destination space
+        copy_height = max(0, min(height, available_dst_height))
+        copy_width = max(0, min(width, available_dst_width))
+    
+        # Only proceed if there's actually something to copy after considering destination limits
+        if copy_height > 0 and copy_width > 0:
+            # Slice the source image using the final copy dimensions
+            src_data_to_copy = img[src_y0 : src_y0 + copy_height, src_x0 : src_x0 + copy_width]
+    
+            # Assign to the destination slice using the final copy dimensions
+            # The shapes src_data_to_copy.shape and the target slice below will now match
+            new_img[dst_y0 : dst_y0 + copy_height, dst_x0 : dst_x0 + copy_width] = src_data_to_copy
+    
+    # The rest of the function remains the same
+    new_img = cv2.resize(new_img, (res[1], res[0]))  # (cols, rows)
+    return new_img, ul, br
+'''
 
 def crop(img, center, scale, res):
     """
@@ -146,5 +193,5 @@ def rot6d_to_rotmat(x):
     a2 = x[:, :, 1]
     b1 = F.normalize(a1)
     b2 = F.normalize(a2 - torch.einsum('bi,bi->b', b1, a2).unsqueeze(-1) * b1)
-    b3 = torch.cross(b1, b2)
+    b3 = torch.cross(b1, b2, dim=-1)
     return torch.stack((b1, b2, b3), dim=-1)

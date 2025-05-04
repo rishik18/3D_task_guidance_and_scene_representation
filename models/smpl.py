@@ -1,4 +1,4 @@
-import torch
+﻿import torch
 import numpy as np
 from smplx import SMPL as _SMPL
 try:
@@ -64,6 +64,7 @@ JOINT_NAMES = [
 # Dict containing the joints in numerical order
 JOINT_IDS = {JOINT_NAMES[i]: i for i in range(len(JOINT_NAMES))}
 
+
 # Map joints to SMPL joints
 JOINT_MAP = {
 'OP Nose': 24, 'OP Neck': 12, 'OP RShoulder': 17,
@@ -85,22 +86,48 @@ JOINT_MAP = {
 'Right Eye': 25, 'Left Ear': 28, 'Right Ear': 27
 }
 
+'''
+# Azure
+JOINT_MAP = {
+'OP Nose': 27, 'OP Neck': 3, 'OP RShoulder': 12,
+'OP RElbow': 13, 'OP RWrist': 14, 'OP LShoulder': 5,
+'OP LElbow': 6, 'OP LWrist': 7, 'OP MidHip': 0,
+'OP RHip': 22, 'OP RKnee': 23, 'OP RAnkle': 24,
+'OP LHip': 1, 'OP LKnee': 4, 'OP LAnkle': 7,
+'OP REye': 30, 'OP LEye': 28, 'OP REar': 31,
+'OP LEar': 29, 'OP LBigToe': 21,'OP RBigToe': 25, 
+'Right Ankle': 24, 'Right Knee': 23, 'Right Hip': 22,
+'Left Hip': 1, 'Left Knee': 4, 'Left Ankle': 7,
+'Right Wrist': 14, 'Right Elbow': 13, 'Right Shoulder': 12,
+'Left Shoulder': 5, 'Left Elbow': 6, 'Left Wrist': 7,
+'Neck (LSP)': 3, 'Top of Head (LSP)': 26,
+'Pelvis (MPII)': 0, 'Thorax (MPII)': 2,
+'Spine (H36M)': 1, 'Jaw (H36M)': 52,
+'Head (H36M)': 26, 'Nose': 27, 'Left Eye': 28,
+'Right Eye': 30, 'Left Ear': 29, 'Right Ear': 31
+,'OP LSmallToe': 35,'OP LHeel': 36, 'OP RSmallToe': 37,'OP RHeel': 38}
+'''
+
 class SMPL(_SMPL):
     """ Extension of the official SMPL implementation to support more joints """
 
     def __init__(self, *args, **kwargs):
-        super(SMPL, self).__init__(*args, **kwargs)
+        # super(SMPL, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         joints = [JOINT_MAP[i] for i in JOINT_NAMES]
         J_regressor_extra = np.load('data/J_regressor_extra.npy')
-        self.register_buffer('J_regressor_extra', torch.tensor(J_regressor_extra, dtype=torch.float32))
-        self.joint_map = torch.tensor(joints, dtype=torch.long)
+        self.register_buffer('J_regressor_extra', torch.tensor(J_regressor_extra, dtype=torch.float32, device =self.v_template.device))
+        self.register_buffer("joint_map",torch.tensor(joints, dtype=torch.long, device=self.v_template.device), persistent=False)
+        #self.joint_map = torch.tensor(joints, dtype=torch.long)
 
     def forward(self, *args, **kwargs):
-        kwargs['get_skin'] = True
-        smpl_output = super(SMPL, self).forward(*args, **kwargs)
+        #kwargs['get_skin'] = True
+        kwargs['return_verts'] = True
+        #smpl_output = super(SMPL, self).forward(*args, **kwargs)
+        smpl_output = super().forward(*args, **kwargs)
         extra_joints = vertices2joints(self.J_regressor_extra, smpl_output.vertices)
         joints = torch.cat([smpl_output.joints, extra_joints], dim=1)
-        joints = joints[:, self.joint_map, :]
+        joints = joints.index_select(1, self.joint_map)
         output = SMPLOutput(vertices=smpl_output.vertices,
                              global_orient=smpl_output.global_orient,
                              body_pose=smpl_output.body_pose,

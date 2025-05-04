@@ -8,6 +8,11 @@
 # PARTICULAR PURPOSE. See the MIT License for more details.
 
 import os
+#os.add_dll_directory(r"D:\mesa\mesa3d-25.0.3-release-msvc\x64")
+##os.environ['PYOPENGL_PLATFORM'] = 'egl'
+#os.environ['PYOPENGL_EGL_LIBRARY'] = r"D:\mesa\mesa3d-25.0.3-release-msvc\x64\libEGL.dll"
+
+
 import trimesh
 import pyrender
 import numpy as np
@@ -19,7 +24,7 @@ class Renderer(object):
 
     def __init__(self, focal_length=600, img_w=512, img_h=512, faces=None,
                  same_mesh_color=False):
-        os.environ['PYOPENGL_PLATFORM'] = 'egl'
+        #os.environ['PYOPENGL_PLATFORM'] = 'egl'
         self.renderer = pyrender.OffscreenRenderer(viewport_width=img_w,
                                                    viewport_height=img_h,
                                                    point_size=1.0)

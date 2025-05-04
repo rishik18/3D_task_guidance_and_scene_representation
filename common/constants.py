@@ -11,8 +11,8 @@ import os
 from os.path import join
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-SMPL_MEAN_PARAMS = join(curr_dir, '../data/smpl_mean_params.npz')
-SMPL_MODEL_DIR = join(curr_dir, '../data')
+SMPL_MEAN_PARAMS = r"D:\CLIFF\CLIFF-main\data\smpl_mean_params.npz"
+SMPL_MODEL_DIR = r"D:\CLIFF\CLIFF-main\data\smpl"
 
 CROP_IMG_HEIGHT = 256
 CROP_IMG_WIDTH = 192
