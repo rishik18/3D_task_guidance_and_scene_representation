@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\common",
+    "\\models",
     "\\reference_code"
   ],
-  "SelectedNode": "\\realtime_state_change_demo.py",
+  "SelectedNode": "\\common\\preprocessing_operations.py",
   "PreviewInSolutionExplorer": false
 }

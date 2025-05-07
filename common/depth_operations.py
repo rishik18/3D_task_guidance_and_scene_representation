@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import argparse
 import numpy as np
@@ -32,7 +32,7 @@ def px_to_cam(p, depth_m, K):
     
     return np.array([x, y, z], dtype=np.float32)
 
-def get_pelvis_translation(pelvis_xy, depth_m, K, device="cuda"):         
+def get_pelvis_translation(pelvis_xy, depth_m, K,device="cuda"):         
     u_pelvis, v_pelvis = pelvis_xy.astype(int)     
     pelvis_depth = depth_m[v_pelvis, u_pelvis]     
     pelvis_3d_coord = px_to_cam([u_pelvis, v_pelvis], depth_m, K)
@@ -54,3 +54,30 @@ def depth_scaled_metric(depth_u8, near=0.5, far=5.46, offset=0.3):
     invalid  = depth_u8 == 0
     depth_m[invalid] = 0.0
     return depth_m
+
+def smpl_fix_coordinates(vertices, joints, pelvis_translation):
+    
+    if vertices.dim() == 2:          # (6890,3) → (1,6890,3)
+        vertices = vertices.unsqueeze(0)
+    if joints.dim() == 2:            # (J,3)    → (1,J,3)
+        joints = joints.unsqueeze(0)
+    if pelvis_translation.dim() == 1:    # (3,) → (1,3)
+        pelvis_translation = pelvis_translation.unsqueeze(0)
+
+    jpelv = joints[0,8].unsqueeze(0)
+
+    print(f"jpelv :{jpelv}")
+    print(f"pelvis_translation: {pelvis_translation}")
+    pelvis_zero_vertices  = vertices - jpelv[:, None, :]   # (B,6890,3)
+    pelvis_zero_joints    = joints   - jpelv[:, None, :] 
+
+    new_opt_vertices  = pelvis_zero_vertices + pelvis_translation[:, None, :]  #-data_full_cam[:, None, :] # (B,6890,3)
+    new_joints = pelvis_zero_joints   + pelvis_translation[:, None, :] #-data_full_cam[:, None, :]
+    return new_opt_vertices, new_joints
+
+def project_cam_to_px(XYZ, K):
+    """Project camera-frame point XYZ → pixel (u,v)."""
+    X, Y, Z = XYZ
+    u = (K[0,0] * X) / Z + K[0,2]
+    v = (K[1,1] * Y) / Z + K[1,2]
+    return int(round(u)), int(round(v)), Z

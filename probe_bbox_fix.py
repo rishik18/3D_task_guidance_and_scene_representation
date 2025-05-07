@@ -19,11 +19,16 @@ from common.utils import strip_prefix_if_present, cam_crop2full, full2crop_cam
 import time
 from common.imutils import process_image 
 
-from common.depth_operations import px_to_cam, get_pelvis_translation, get_probe_centroid, depth_scaled_metric
+from common.depth_operations import px_to_cam, get_pelvis_translation, get_probe_centroid, depth_scaled_metric, smpl_fix_coordinates,project_cam_to_px
 from common.scene_operations import rgb_hsv_mask, centroid_px, add_reference_frame, add_prob_centroid2scene
 from common.smpl_fitting_ops import refine_smpl, smpl_skip_refinement
 from common.preprocessing_operations import map_kinect_to_smpl, process_keypoints, get_crop_cam, preprocess_crop, compute_bbox_full_scale
 from losses import camera_fitting_loss, body_fitting_loss
+from common.renderer_pyrd import Renderer
+
+# For the GMM prior, we use the GMM implementation of SMPLify-X
+# https://github.com/vchoutas/smplify-x/blob/master/smplifyx/prior.py
+from prior import MaxMixturePrior
 
 # For the GMM prior, we use the GMM implementation of SMPLify-X
 # https://github.com/vchoutas/smplify-x/blob/master/smplifyx/prior.py
@@ -117,13 +122,13 @@ def main():
 
     # Run CLIFF
     with torch.no_grad():
-            pred_rotmat, betas, pred_cam_crop = cliff_model(norm_img, bbox_info,init_cam=init_cam, n_iter=5 )
+            pred_rotmat, betas, pred_cam_crop = cliff_model(norm_img, bbox_info, n_iter=5 )
 
     # Use pred_cam_full if using CLIFF predicted cam
     #pred_cam_full = cam_crop2full(pred_cam_crop, center, scale, full_img_shape, focal_length)
 
     # Use data_full_cam if using translation data from Kinect
-    data_full_cam = torch.tensor([[kinect_translation[0]/1000,  -kinect_translation[1]/1000,   kinect_translation[2]]], dtype=torch.float32, device=device)
+    data_full_cam = torch.tensor([[kinect_translation[0]/1000,  -kinect_translation[1]/1000,   kinect_translation[2]/1000]], dtype=torch.float32, device=device)
     
     # Process pose data
     init_pose = transforms.matrix_to_axis_angle(pred_rotmat).contiguous().view(-1, 72)    
@@ -144,6 +149,10 @@ def main():
     ##smpl_skip_refinement sample
     #new_opt_vertices, faces = smpl_skip_refinement(smpl = smpl, betas =betas, init_pose=init_pose, pose2rot=True, transl=pelvis_translation)
     
+    # adjusts SMPL pelvis to origin before applying the pelvis translation
+    new_opt_vertices, new_joints = smpl_fix_coordinates(new_opt_vertices,new_opt_joints, pelvis_translation)
+
+    ## Rendering section
     vertices = new_opt_vertices.cpu().detach().numpy()
     if vertices.ndim == 3:
         vertices = vertices[0]
