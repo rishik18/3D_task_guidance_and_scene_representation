@@ -20,7 +20,7 @@ import time
 from common.imutils import process_image 
 
 from common.depth_operations import px_to_cam, get_pelvis_translation, get_probe_centroid, depth_scaled_metric, smpl_fix_coordinates,project_cam_to_px
-from common.scene_operations import rgb_hsv_mask, centroid_px, add_reference_frame, add_prob_centroid2scene
+from common.scene_operations import rgb_hsv_mask, centroid_px, add_reference_frame, add_prob_centroid2scene, add_custom_marker_az
 from common.smpl_fitting_ops import refine_smpl, smpl_skip_refinement
 from common.preprocessing_operations import map_kinect_to_smpl, process_keypoints, get_crop_cam, preprocess_crop, compute_bbox_full_scale
 from losses import camera_fitting_loss, body_fitting_loss
@@ -154,15 +154,72 @@ def main():
 
     ## Rendering section
     vertices = new_opt_vertices.cpu().detach().numpy()
+    new_joints = new_joints.cpu().detach().numpy()
+
     if vertices.ndim == 3:
         vertices = vertices[0]
     if not isinstance(faces, np.ndarray):
         faces = faces.cpu().numpy() if torch.is_tensor(faces) else faces
     
     mesh = trimesh.Trimesh(vertices=vertices, faces=faces, process=False)
-    pyr_mesh = pyrender.Mesh.from_trimesh(mesh)
+    
 
     scene = pyrender.Scene()
+
+    # refer to JOINT_NAMES in the common/preprocessing_operations for joint numbers
+
+    # Add a marker on the right leg
+    add_custom_marker_az(scene,
+                         mesh,
+                         new_joints,
+                         joint_id_a=10,            # 'OP RWrist'
+                         joint_id_b=11,            # 'OP LWrist'
+                         l=0.3,                  # 10 cm from RWrist toward LWrist
+                         alpha_deg=-120.0,       # azimuth inside X-Z plane
+                         add_shpere = True,
+                         sphere_radius=0.02,
+                         sphere_color=(0.2,0.8,1.0,1.0)
+                         ,add_color_gradient = True
+                         ,inner_r  = 0.005
+                         ,outer_r = 0.035
+                         ,hit_rgba = np.array([255, 0, 0, 255], np.uint8)
+                         ,gamma = 0.2)
+    # Add another marker on the right leg at differet length
+    add_custom_marker_az(scene,
+                         mesh,
+                         new_joints,
+                         joint_id_a=10,            # 'OP RWrist'
+                         joint_id_b=11,            # 'OP LWrist'
+                         l=0.15,                  # 10 cm from RWrist toward LWrist
+                         alpha_deg=-90.0,       # azimuth inside X-Z plane
+                         add_shpere = False,
+                         sphere_radius=0.02,
+                         sphere_color=(0.2,0.8,1.0,1.0)
+                         ,add_color_gradient = True
+                         ,inner_r  = 0.005
+                         ,outer_r = 0.02
+                         ,hit_rgba = np.array([0, 255, 0, 255], np.uint8)
+                         ,gamma = 0.2)
+
+
+    # Add a marker on the left leg with changed color and angle
+    add_custom_marker_az(scene,
+                         mesh,
+                         new_joints,
+                         joint_id_a=13,            # 'OP RWrist'
+                         joint_id_b=14,            # 'OP LWrist'
+                         l=0.2,                  # 10 cm from RWrist toward LWrist
+                         alpha_deg=-50.0,       # azimuth inside X-Z plane
+                         add_shpere = True,
+                         sphere_radius=0.02,
+                         sphere_color=(0.0,0.0,1.0,1.0)
+                         ,add_color_gradient = True
+                         ,inner_r  = 0.005
+                         ,outer_r = 0.035
+                         ,hit_rgba = np.array([0, 255, 0, 255], np.uint8)
+                         ,gamma = 0.2)
+
+    pyr_mesh = pyrender.Mesh.from_trimesh(mesh)
     scene.add(pyr_mesh)
 
     # Use this line to add reference frame to scene

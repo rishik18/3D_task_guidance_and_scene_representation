@@ -66,8 +66,8 @@ def smpl_fix_coordinates(vertices, joints, pelvis_translation):
 
     jpelv = joints[0,8].unsqueeze(0)
 
-    print(f"jpelv :{jpelv}")
-    print(f"pelvis_translation: {pelvis_translation}")
+    #print(f"jpelv :{jpelv}")
+    #print(f"pelvis_translation: {pelvis_translation}")
     pelvis_zero_vertices  = vertices - jpelv[:, None, :]   # (B,6890,3)
     pelvis_zero_joints    = joints   - jpelv[:, None, :] 
 
