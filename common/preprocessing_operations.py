@@ -213,6 +213,7 @@ def preprocess_crop(frame, bbox, crop_height, crop_width, camera_center, focal_l
     norm_img_np, center, scale, ul, br, crop_img = process_image(
             frame[:, :, ::-1], bbox, crop_height =224, crop_width=224
     )
+    
     center = torch.tensor([[center[0],center[1]]], device=device)
 
     norm_img = torch.from_numpy(norm_img_np).unsqueeze(0).to(device).float()
@@ -221,8 +222,8 @@ def preprocess_crop(frame, bbox, crop_height, crop_width, camera_center, focal_l
 
     # 1) stack into a (1×3) tensor [dx,dy,b]
     bbox_info = torch.stack([
-        center[:, 0] - camera_center[0],   # dx
-        center[:, 1] - camera_center[1],   # dy
+        center[:,0] - camera_center[:,0],   # dx
+        center[:,1] - camera_center[:,1],   # dy
         b                              # baseline
     ], dim=-1)                         # shape [1,3]
 
