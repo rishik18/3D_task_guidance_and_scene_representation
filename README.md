@@ -3,6 +3,10 @@
 ### Stevens Institute of Technology
 ![image](https://github.com/user-attachments/assets/e5941ff2-b54a-4803-a0ae-a8204046d9be)
 
+## Demos
+1) RGBD Demo with Realsense - demo_pcd.py
+2) RGB only demo using webcam - realtime_state_change_demo.py
+
 ## For single frame fitting
 1) Update the "frame" file name and change the "azure_keypoints_sample" keypoints in azure_CLIFF_single_frame.py
 2) Run azure_CLIFF_single_frame.py.
