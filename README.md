@@ -3,9 +3,6 @@
 ### Stevens Institute of Technology
 ![image](https://github.com/user-attachments/assets/e5941ff2-b54a-4803-a0ae-a8204046d9be)
 
-This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data. 
-The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
-
 ## For single frame fitting
 1) Update the "frame" file name and change the "azure_keypoints_sample" keypoints in azure_CLIFF_single_frame.py
 2) Run azure_CLIFF_single_frame.py.
@@ -25,6 +22,7 @@ You will need to modify the smplify.py file to use the original ignore list inst
 ## Acknowledgements
 Thank you to Dr. Nikhil Krishnaswamy and CSU’s SIGNAL Lab for the data supporting this solution.
 ***
+# This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data, and serve as a task guidance toolkit. The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
 
 # CLIFF [ECCV 2022 Oral]
 
