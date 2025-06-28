@@ -22,7 +22,7 @@ You will need to modify the smplify.py file to use the original ignore list inst
 ## Acknowledgements
 Thank you to Dr. Nikhil Krishnaswamy and CSU’s SIGNAL Lab for the data supporting this solution.
 ***
-# This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data, and serve as a task guidance toolkit. The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
+### This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data, and serve as a task guidance toolkit. The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
 
 # CLIFF [ECCV 2022 Oral]
 
