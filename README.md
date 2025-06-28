@@ -1,4 +1,6 @@
 # 3D task guidance and scene representation toolkit
+### Hrishikesh Kanade, Juan Carlos Dibene Simental, Enrique Dunn
+### Stevens Institute of Technology
 ![image](https://github.com/user-attachments/assets/e5941ff2-b54a-4803-a0ae-a8204046d9be)
 
 This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data. 
@@ -19,6 +21,9 @@ You can resize the RGB frames to 1920x1080 by using the resize.py file.
 
 ## Note for using CLIFF demo_fit
 You will need to modify the smplify.py file to use the original ignore list instead of the updated one.
+
+## Acknowledgements
+Thank you to Dr. Nikhil Krishnaswamy and CSU’s SIGNAL Lab for the data supporting this solution.
 ***
 
 # CLIFF [ECCV 2022 Oral]
