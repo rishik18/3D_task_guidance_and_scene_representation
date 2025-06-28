@@ -1,4 +1,6 @@
-# CLIFF+azure
+# 3D task guidance and scene representation toolkit
+![image](https://github.com/user-attachments/assets/e5941ff2-b54a-4803-a0ae-a8204046d9be)
+
 This repo is a fork of https://github.com/haofanwang/CLIFF. It aims to add realtime SMPL fitting using CLIFF and Kinect pose data. 
 The contents of the README below this section have been borrowed from the CLIFF repo to aid installation and setup.
 
