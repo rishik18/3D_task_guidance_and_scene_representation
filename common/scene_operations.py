@@ -86,7 +86,7 @@ def add_custom_marker_az(scene,
                          joints,                # (N,3) numpy
                          joint_id_a,
                          joint_id_b,
-                         l,               # metres from A along AB
+                         l,               # % length from A along AB
                          alpha_deg,       # azimuth inside X-Z plane
                          add_shpere = False,
                          sphere_radius=0.02,
@@ -97,7 +97,7 @@ def add_custom_marker_az(scene,
                          ,hit_rgba = np.array([255, 64, 32, 255], np.uint8)
                          ,gamma = 2.5):
     """
-    l is length along the line from joint A to joint B
+    l is percentage of length along the line from joint A to joint B
     α is measured in the plane perpendicular to AB:
         0° → local +X
        90° → local +Z
@@ -136,7 +136,7 @@ def add_custom_marker_az(scene,
     z_axis = np.cross(y_axis, x_axis)                                # +Z (right-handed)
 
     # ray origin & direction ---------------------------------------
-    origin   = pA + (l / normAB) * vAB                               # on AB
+    origin   = pA + l * vAB                               # on AB
     alpha    = math.radians(alpha_deg)
     dir_vec  =  math.cos(alpha) * x_axis + math.sin(alpha) * z_axis
     dir_vec /= np.linalg.norm(dir_vec)
