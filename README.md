@@ -29,7 +29,7 @@ Please follow the installation instructions at https://github.com/haofanwang/CLI
 
 ## Acknowledgements
 1) Thank you to Dr. Nikhil Krishnaswamy and CSU’s SIGNAL Lab for the data supporting this solution.
-2) This repo is built on https://github.com/haofanwang/CLIFF and https://github.com/huawei-noah/noah-research/tree/master/CLIFF.
+2) This repo is built on https://github.com/haofanwang/CLIFF and https://github.com/huawei-noah/noah-research/tree/master/CLIFF, special thanks to the authors of these repos.
 
 ## Contact details
 Rishi (Hrishikesh) Kanade: rishikanade@outlook.com
