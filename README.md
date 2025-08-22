@@ -1,6 +1,7 @@
 # 3D task guidance and scene representation toolkit
 ### Hrishikesh Kanade, Juan Carlos Dibene Simental, Enrique Dunn
-### Stevens Institute of Technology
+### Stevens Institute of Technology, Hoboken, NJ
+
 ![image](https://github.com/user-attachments/assets/e5941ff2-b54a-4803-a0ae-a8204046d9be)
 
 ## Demos
